@@ -5,13 +5,15 @@
 
 ## 快速开始
 1. 按照[NoneBot指南](https://nonebot.cqp.moe/guide/)配置
-2. 配置RCON `mcrcon_setting`
-3. 配置超级管理员 `config.py`
-3. python(3) main.py
+2. 安装mcstatus (pip(3) install mcstatus)
+3. 配置RCON `mcrcon_setting`
+4. 配置超级管理员 `config.py`
+5. 配置服务器信息 `status_setting.py`
+6. python(3) main.py
 
 ## 指令
 - #help
-- #list
+- #list or #status
 - #mute
 - #run
 - #say
