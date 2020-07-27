@@ -4,6 +4,7 @@ import re
 from nonebot import on_command, CommandSession
 from nonebot import permission as perm
 
+
 @on_command('run', permission=perm.SUPERUSER | perm.GROUP_ADMIN, only_to_me=False)
 async def run(session: CommandSession):
     chat_data = str(session.current_arg_text).strip()

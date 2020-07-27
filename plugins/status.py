@@ -3,10 +3,12 @@ from nonebot import permission as perm
 from mcstatus import MinecraftServer
 from status_setting import serverList
 
+
 @on_command('status', aliases=('服务器状态', '状态', 'list'), permission=perm.GROUP_MEMBER, only_to_me=False)
 async def status(session: CommandSession):
     message = await getStatus()
     await session.send(message)
+
 
 def createJson(ip, port):
     server = MinecraftServer(ip, port)
@@ -27,6 +29,7 @@ def createJson(ip, port):
         pass
     return data
 
+
 def createBungeeJson(ip, port):
     server = MinecraftServer(ip, port)
     data = {'online': False}
@@ -43,28 +46,36 @@ def createBungeeJson(ip, port):
         pass
     return data
 
+
 def playerList(players):
     plist = ''
     for i in players:
         plist += i['name'] + ', '
-    plist = plist[:len(plist)-2]
+    plist = plist[:len(plist) - 2]
     if plist == '':
         return '没有在线玩家'
     return plist
+
 
 async def getStatus() -> str:
     r = ''
     for k, v in serverList.items():
         if v['type'] == 'bungee':
             s = createBungeeJson(v['ip'], v['port'])
-            if s['online'] == True:
+            if s['online']:
                 r += ('{} 版本: {} 人数: {}/{}\n'.format(k, s['version'], s['player_count'], s['player_max']))
             else:
                 r += ('{} 不在线\n'.format(k))
         else:
             s = createJson(v['ip'], v['port'])
-            if s['online'] == True:
-                r += ('{} 版本: {} 人数: {}/{} 玩家: {}\n'.format(k, s['version'], s['player_count'], s['player_max'], playerList(s['players'])))
+            if s['online']:
+                r += ('{} 版本: {} 人数: {}/{} 玩家: {}\n'.format(
+                    k,
+                    s['version'],
+                    s['player_count'],
+                    s['player_max'],
+                    playerList(s['players'])
+                ))
             else:
                 r += ('{} 不在线\n'.format(k))
     return f'{r}'
