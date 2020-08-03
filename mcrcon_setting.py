@@ -1,1 +1,0 @@
-rcon_setting = {'address': '', 'password': '', 'port': 25575}

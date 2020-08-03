@@ -3,13 +3,15 @@ import ssl
 import select
 import struct
 import time
-#导入模块
+
+
+# 导入模块
 
 class MCRconException(Exception):
     pass
 
 
-class MCRcon(object):	
+class MCRcon(object):
     """Minecraft服务端远程命令（RCON）模板
 
 	老咩友情提醒您：
@@ -38,7 +40,7 @@ class MCRcon(object):
     """
     socket = None
 
-	#重写init方法
+    # 重写init方法
     def __init__(self, host, password, port, tlsmode=0):
         self.host = host
         self.password = password
@@ -47,7 +49,7 @@ class MCRcon(object):
 
     def __exit__(self, type, value, tb):
         self.disconnect()
-		
+
     def __enter__(self):
         self.connect()
         return self
@@ -69,19 +71,17 @@ class MCRcon(object):
         self.socket.connect((self.host, self.port))
         self._send(3, self.password)
 
-
-
     def _read(self, length):
         data = b""
         while len(data) < length:
             data += self.socket.recv(length - len(data))
         return data
-		
+
     def disconnect(self):
         if self.socket is not None:
             self.socket.close()
             self.socket = None
-			
+
     def _send(self, out_type, out_data):
         if self.socket is None:
             raise MCRconException("发送前必须连接！")
@@ -106,9 +106,7 @@ class MCRcon(object):
             if in_id == -1:
                 raise MCRconException("登录rcon协议失败")
 
-            
             in_data += in_data_partial.decode('utf8')
-
 
             if len(select.select([self.socket], [], [], 0)[0]) == 0:
                 return in_data
@@ -121,5 +119,5 @@ class MCRcon(object):
 
     def command(self, command):
         result = self._send(2, command)
-        time.sleep(0.003) # MC-72390 （非线程安全的解决办法）
+        time.sleep(0.003)  # MC-72390 （非线程安全的解决办法）
         return result

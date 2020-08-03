@@ -1,11 +1,9 @@
-from mcrcon import MCRcon
-from mcrcon_setting import rcon_setting
 from nonebot import on_command, CommandSession
 from nonebot import permission as perm
 
 
 @on_command('say', permission=perm.GROUP_MEMBER, only_to_me=False)
-async def say(session: CommandSession):
+async def sayCommand(session: CommandSession):
     chat_data = str(session.current_arg_text).strip()
     if chat_data == 'help':
         message = '#say 用户名 内容'
@@ -24,8 +22,3 @@ async def say(session: CommandSession):
             message = '参数不全 获取帮助 #say help'
             await session.send(message)
 
-
-async def rcon(_command: str) -> str:
-    with MCRcon(rcon_setting['address'], rcon_setting['password'], rcon_setting['port']) as mcr:
-        r = mcr.command(_command)
-    return f'{r}'
